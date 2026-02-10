@@ -1,0 +1,35 @@
+<div class="dialog-overlay" (click)="onCancel()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <h3>Edit Pricing Record</h3>
+
+    <div class="form-group">
+      <label>Store ID</label>
+      <input type="text" [(ngModel)]="record.storeId" readonly class="readonly">
+    </div>
+
+    <div class="form-group">
+      <label>SKU</label>
+      <input type="text" [(ngModel)]="record.sku" readonly class="readonly">
+    </div>
+
+    <div class="form-group">
+      <label>Product Name</label>
+      <input type="text" [(ngModel)]="record.productName">
+    </div>
+
+    <div class="form-group">
+      <label>Price</label>
+      <input type="number" [(ngModel)]="record.price" step="0.01" min="0">
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" [(ngModel)]="record.date">
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="onSave()">Save</button>
+    </div>
+  </div>
+</div>

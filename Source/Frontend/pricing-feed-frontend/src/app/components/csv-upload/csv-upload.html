@@ -1,0 +1,85 @@
+<div class="upload-container">
+  <h2>Upload Pricing Feed</h2>
+
+  <!-- Drop zone -->
+  <div class="drop-zone"
+       (dragover)="onDragOver($event)"
+       (drop)="onDrop($event)">
+
+    @if (!selectedFile) {
+      <div class="drop-message">
+        <span class="icon">&#128196;</span>
+        <p>Drag & drop a CSV file here, or click to browse</p>
+        <input type="file" accept=".csv" (change)="onFileSelected($event)" #fileInput hidden>
+        <button class="btn btn-primary" (click)="triggerFileInput()">Browse Files</button>
+      </div>
+    } @else {
+      <div class="file-info">
+        <span class="icon">&#9989;</span>
+        <p>{{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(1) }} KB)</p>
+        <button class="btn btn-link" (click)="reset()">Remove</button>
+      </div>
+    }
+  </div>
+
+  <!-- Upload button -->
+  @if (selectedFile && !response) {
+    <button class="btn btn-primary upload-btn" (click)="upload()" [disabled]="uploading">
+      @if (uploading) {
+        <span class="spinner"></span> Uploading...
+      } @else {
+        Upload
+      }
+    </button>
+  }
+
+  <!-- Error message -->
+  @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  }
+
+  <!-- Upload result -->
+  @if (response) {
+    <div class="result-card">
+      <h3>Upload Result</h3>
+      <div class="result-stats">
+        <div class="stat">
+          <span class="stat-value">{{ response.totalRows }}</span>
+          <span class="stat-label">Total Rows</span>
+        </div>
+        <div class="stat stat-success">
+          <span class="stat-value">{{ response.successCount }}</span>
+          <span class="stat-label">Saved</span>
+        </div>
+        <div class="stat stat-error">
+          <span class="stat-value">{{ response.failureCount }}</span>
+          <span class="stat-label">Failed</span>
+        </div>
+      </div>
+
+      @if (response.errors && response.errors.length > 0) {
+    <div class="error-table">
+        <h4>Errors</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (err of response.errors; track $index) {
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ err }}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+
+      <button class="btn btn-primary" (click)="reset()">Upload Another</button>
+    </div>
+  }
+</div>

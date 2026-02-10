@@ -1,0 +1,34 @@
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "product_name_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": { "type": "keyword" },
+      "storeId": { "type": "keyword" },
+      "sku": { "type": "keyword" },
+      "productName": {
+        "type": "text",
+        "analyzer": "product_name_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "price": { "type": "double" },
+      "date": { "type": "date", "format": "yyyy-MM-dd" }
+    }
+  }
+}
